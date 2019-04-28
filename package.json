@@ -37,13 +37,17 @@
     "aegir": "^18.2.2",
     "bundlesize": "~0.17.1",
     "chai": "^4.2.0",
-    "dirty-chai": "^2.0.1"
+    "dirty-chai": "^2.0.1",
+    "safe-buffer": "^5.1.2"
   },
   "dependencies": {
     "async": "^2.6.2",
     "class-is": "^1.1.0",
+    "ethereumjs-util": "^6.1.0",
     "libp2p-crypto": "~0.16.1",
-    "multihashes": "~0.4.14"
+    "libp2p-crypto-secp256k1": "^0.3.0",
+    "multihashes": "~0.4.14",
+    "multihashing-async": "^0.7.0"
   },
   "repository": {
     "type": "git",

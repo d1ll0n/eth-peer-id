@@ -1,6 +1,6 @@
 {
   "name": "eth-peer-id",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Fork of js-peer-id using Ethereum addresses.",
   "main": "src/index.js",
   "bin": "src/bin.js",

@@ -8,7 +8,6 @@ const mh = require('multihashes')
 const multihashing = require('multihashing-async')
 const cryptoKeys = require('libp2p-crypto/src/keys')
 const assert = require('assert')
-const waterfall = require('async/waterfall')
 const withIs = require('class-is')
 const { publicToAddress, bufferToHex, toBuffer } = require('ethereumjs-util')
 

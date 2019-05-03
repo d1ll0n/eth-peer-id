@@ -1,22 +1,16 @@
-# peer-id
+# eth-peer-id
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
-[![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
-[![Discourse posts](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
-[![](https://img.shields.io/codecov/c/github/libp2p/js-peer-id.svg?style=flat-square)](https://codecov.io/gh/libp2p/js-peer-id)
-[![](https://img.shields.io/travis/libp2p/js-peer-id.svg?style=flat-square)](https://travis-ci.com/libp2p/js-peer-id)
-[![Dependency Status](https://david-dm.org/libp2p/js-peer-id.svg?style=flat-square)](https://david-dm.org/libp2p/js-peer-id)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
-
-> [IPFS](https://github.com/ipfs/ipfs) Peer ID implementation in JavaScript.
+> Fork of [peer-id](https://github.com/libp2p/js-peer-id/) where id is a sha3 hash of an Ethereum address.
 
 ## Lead Maintainer
 
-[Pedro Teixeira](https://github.com/pgte)
+[Dillon Kellar](https://github.com/d1ll0n)
 
 ## Table of Contents
 
+- [eth-peer-id](#eth-peer-id)
+  - [Lead Maintainer](#lead-maintainer)
+  - [Table of Contents](#table-of-contents)
 - [Description](#description)
 - [Example](#example)
 - [Installation](#installation)
@@ -42,6 +36,7 @@
     - [`toB58String()`](#tob58string)
     - [`toJSON()`](#tojson)
     - [`toPrint()`](#toprint)
+    - [`isEqual(id)`](#isequalid)
 - [License](#license)
 
 # Description

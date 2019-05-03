@@ -30,6 +30,7 @@
     - [`createFromPubKey(pubKey)`](#createfrompubkeypubkey)
     - [`createFromPrivKey(privKey)`](#createfromprivkeyprivkey)
     - [`createFromJSON(obj)`](#createfromjsonobj)
+    - [`createFromAddress(address)`](#createfromaddressaddress)
   - [Export](#export)
     - [`toHexString()`](#tohexstring)
     - [`toBytes()`](#tobytes)
@@ -159,6 +160,11 @@ Creates a Peer ID from a buffer containing a private key.
 - `obj.id: String` - The multihash encoded in `base58`
 - `obj.pubKey: String` - The public key in protobuf format, encoded in `base64`
 - `obj.privKey: String` - The private key in protobuf format, encoded in `base64`
+
+### `createFromAddress(address)`
+
+- `address: String | Buffer` - The Ethereum address.
+
 
 ## Export
 

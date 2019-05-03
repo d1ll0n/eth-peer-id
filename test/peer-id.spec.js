@@ -7,8 +7,10 @@ const dirtyChai = require('dirty-chai')
 chai.use(dirtyChai)
 const expect = chai.expect
 const crypto = require('libp2p-crypto')
+const cryptoKeys = require('libp2p-crypto/src/keys')
 const mh = require('multihashes')
 const parallel = require('async/parallel')
+const { publicToAddress } = require('ethereumjs-util')
 
 const PeerId = require('../src')
 
@@ -18,6 +20,7 @@ const testId = require('./fixtures/sample-id')
 const testIdB58String = testId.id
 const testIdBytes = mh.fromB58String(testId.id)
 const testIdHex = mh.toHexString(Buffer.from(testIdBytes))
+const testIdAddress = publicToAddress(cryptoKeys.unmarshalPublicKey(Buffer.from(testId.pubKey, 'base64'))._key, true);
 
 
 const goId = testId
@@ -82,6 +85,14 @@ describe('PeerId', () => {
   it('Recreate from a Public Key', (done) => {
     return PeerId.createFromPubKey(testId.pubKey, (err, id) => {
       if (err) throw err
+      expect(testIdB58String).to.equal(id.toB58String())
+      done()
+    })
+  })
+
+  it('Recreate from an address', (done) => {
+    PeerId.createFromAddress(testIdAddress, (err, id) => {
+      if (err) throw err;
       expect(testIdB58String).to.equal(id.toB58String())
       done()
     })

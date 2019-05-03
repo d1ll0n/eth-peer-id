@@ -9,7 +9,7 @@ const multihashing = require('multihashing-async')
 const cryptoKeys = require('libp2p-crypto/src/keys')
 const assert = require('assert')
 const withIs = require('class-is')
-const { publicToAddress, bufferToHex, toBuffer } = require('ethereumjs-util')
+const { publicToAddress } = require('ethereumjs-util')
 
 const publicToId = async (publicKey, cb) => {
   return multihashing(publicToAddress(publicKey, true), 'sha3-256')
@@ -194,6 +194,12 @@ exports.createFromPubKey = function (key, callback) {
   }
 }
 
+exports.createFromAddress = function(address, callback) {
+  return multihashing(address, 'sha3-256')
+    .then(id => callback(null, new PeerIdWithIs(id, null, null)))
+    .catch(err => callback(err))
+}
+
 // Private key input will be a string
 exports.createFromPrivKey = function (key, callback) {
   if (typeof callback !== 'function') throw new Error('callback is required')
@@ -253,6 +259,9 @@ exports.isPeerId = function (peerId) {
     peerId._id &&
     peerId._idB58String)
 }
+
+exports.publicToId = publicToId
+exports.publicToIdAsync = publicToIdAsync
 
 function toB64Opt (val) {
   if (val) {

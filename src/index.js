@@ -13,7 +13,7 @@ const withIs = require('class-is')
 const { publicToAddress, bufferToHex, toBuffer } = require('ethereumjs-util')
 
 const publicToId = async (publicKey, cb) => {
-  return multihashing(publicToAddress(publicKey, true), 'sha2-256')
+  return multihashing(publicToAddress(publicKey, true), 'sha3-256')
     .then(id => cb(null, id))
     .catch(err => cb(err))
 }
@@ -182,20 +182,17 @@ exports.createFromPubKey = function (key, callback) {
 
   try {
     let buf = key
-    if (typeof buf === 'string') {
-      buf = Buffer.from(key, 'base64')
-    }
-
+    if (typeof buf === 'string') buf = Buffer.from(key, 'base64')
     if (!Buffer.isBuffer(buf)) throw new Error('Supplied key is neither a base64 string nor a buffer')
 
     pubKey = cryptoKeys.unmarshalPublicKey(buf)
+    publicToId(pubKey._key, (err, id) => {
+      if (err) return callback(err)
+      callback(null, new PeerIdWithIs(id, null, pubKey))
+    })
   } catch (err) {
     return callback(err)
   }
-  publicToId(pubKey._key, (err, id) => {
-    if (err) return callback(err)
-    callback(null, new PeerIdWithIs(id, null, pubKey))
-  })
 }
 
 // Private key input will be a string
@@ -207,17 +204,18 @@ exports.createFromPrivKey = function (key, callback) {
   try {
     if (typeof buf === 'string') buf = Buffer.from(key, 'base64')
     if (!Buffer.isBuffer(buf)) throw new Error('Supplied key is neither a base64 string nor a buffer')
+
+    cryptoKeys.unmarshalPrivateKey(buf, (err, key) => {
+      if (err) return callback(err)
+      publicToId(key._publicKey, (err, id) => {
+        if (err) return callback(err)
+        callback(null, new PeerIdWithIs(id, key, key.public))
+      })
+    })
+
   } catch (err) {
     return callback(err)
   }
-
-  cryptoKeys.unmarshalPrivateKey(buf, (err, key) => {
-    if (err) return callback(err)
-    publicToId(key.public._key, (err, id) => {
-      if (err) return callback(err)
-      callback(null, new PeerIdWithIs(id, key, key.public))
-    })
-  })
 }
 
 exports.createFromJSON = function (obj, callback) {
@@ -245,7 +243,6 @@ exports.createFromJSON = function (obj, callback) {
     let pubKey = cryptoKeys.unmarshalPublicKey(rawPubKey)
     let privId = await publicToIdAsync(privKey.public._key)
     let pubId = await publicToIdAsync(pubKey._key)
-    console.log(`pubid ${pubId} \n privid ${privId}`)
     if (!privId.equals(id)) return callback(new Error('Id and private key do not match'))
     if (!privId.equals(pubId)) return callback(new Error('Public and private key do not match'))
     callback(null, new PeerIdWithIs(id, privKey, pubKey))

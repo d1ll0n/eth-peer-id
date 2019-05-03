@@ -15,10 +15,10 @@ const PeerId = require('../src')
 const util = require('util')
 
 const testId = require('./fixtures/sample-id')
-const testIdHex = testId.id
-const testIdBytes = mh.fromHexString(testIdHex)
+const testIdB58String = testId.id
+const testIdBytes = mh.fromB58String(testId.id)
+const testIdHex = mh.toHexString(Buffer.from(testIdBytes))
 
-const testIdB58String = mh.toB58String(testIdBytes)
 
 const goId = testId
 
@@ -71,16 +71,16 @@ describe('PeerId', () => {
 
   it('Recreate an Id from a Buffer', () => {
     const id = PeerId.createFromBytes(testIdBytes)
-    expect(testId.id).to.equal(id.toHexString())
+    expect(testIdHex).to.equal(id.toHexString())
   })
 
-  it('Recreate a B58 String', () => {
+  it('Recreate from a B58 String', () => {
     const id = PeerId.createFromB58String(testIdB58String)
     expect(testIdB58String).to.equal(id.toB58String())
   })
 
   it('Recreate from a Public Key', (done) => {
-    PeerId.createFromPubKey(testId.pubKey, (err, id) => {
+    return PeerId.createFromPubKey(testId.pubKey, (err, id) => {
       if (err) throw err
       expect(testIdB58String).to.equal(id.toB58String())
       done()
@@ -88,7 +88,7 @@ describe('PeerId', () => {
   })
 
   it('Recreate from a Private Key', (done) => {
-    PeerId.createFromPrivKey(testId.privKey, (err, id) => {
+    return PeerId.createFromPrivKey(testId.privKey, (err, id) => {
       if (err) throw err
       expect(testIdB58String).to.equal(id.toB58String())
 
@@ -136,12 +136,12 @@ describe('PeerId', () => {
   }) */
 
   it('Pretty printing', (done) => {
-    PeerId.create(testOpts, (err, id1) => {
-      expect(err).to.not.exist()
-      PeerId.createFromPrivKey(id1.toJSON().privKey, (err, id2) => {
-        expect(err).to.not.exist()
+    return PeerId.create(testOpts, (err, id1) => {
+      if (err) throw err
+      return PeerId.createFromPrivKey(id1.toJSON().privKey, (err, id2) => {
+        if (err) throw err
         expect(id1.toPrint()).to.be.eql(id2.toPrint())
-        expect(id1.toPrint()).to.equal('<peer.ID ' + id1.toB58String().substr(2, 6) + '>')
+        expect(id1.toPrint()).to.equal('<peer.ID ' + id1.toB58String().substr(0, 6) + '>')
         done()
       })
     })

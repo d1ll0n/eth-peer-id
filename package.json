@@ -1,5 +1,5 @@
 {
-  "name": "peer-id-address",
+  "name": "peer-id-eth-address",
   "version": "0.12.2",
   "description": "IPFS Peer Id implementation in Node.js using Ethereum addresses.",
   "leadMaintainer": "Pedro Teixeira <i@pgte.me>",
